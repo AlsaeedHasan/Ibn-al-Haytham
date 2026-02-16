@@ -1,0 +1,4 @@
+__pycache__
+.venv
+.env
+database_schems_1.0.md
