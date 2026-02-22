@@ -41,11 +41,17 @@ class User(Base, TimestampMixin, UUIDModel):
     personal_email: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     hashed_password: Mapped[str] = mapped_column(String)
 
-    first_name: Mapped[str] = mapped_column(String(50))
-    second_name: Mapped[str] = mapped_column(String(50))
-    third_name: Mapped[str] = mapped_column(String(50))
-    fourth_name: Mapped[str] = mapped_column(String(50))
-    family_name: Mapped[str] = mapped_column(String(50))
+    first_name_ar: Mapped[str] = mapped_column(String(50))
+    second_name_ar: Mapped[str] = mapped_column(String(50))
+    third_name_ar: Mapped[str] = mapped_column(String(50))
+    fourth_name_ar: Mapped[str] = mapped_column(String(50))
+    family_name_ar: Mapped[str] = mapped_column(String(50))
+
+    first_name_en: Mapped[str] = mapped_column(String(50))
+    second_name_en: Mapped[str] = mapped_column(String(50))
+    third_name_en: Mapped[str] = mapped_column(String(50))
+    fourth_name_en: Mapped[str] = mapped_column(String(50))
+    family_name_en: Mapped[str] = mapped_column(String(50))
 
     profile_picture_url: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
@@ -57,7 +63,7 @@ class User(Base, TimestampMixin, UUIDModel):
     student: Mapped[Optional["Student"]] = relationship(
         "Student", back_populates="user", uselist=False, cascade="all, delete-orphan"
     )
-    student_scores: Mapped[List["StudentScore"]] = relationship(
+    graded_scores: Mapped[List["StudentScore"]] = relationship(
         "StudentScore", back_populates="grader", cascade="all, delete-orphan"
     )
 
@@ -66,7 +72,8 @@ class Role(Base):
     __tablename__ = "roles"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(50), unique=True)
+    name_ar: Mapped[str] = mapped_column(String(50), unique=True)
+    name_en: Mapped[str] = mapped_column(String(50), unique=True)
     slug: Mapped[str] = mapped_column(String(50), unique=True, index=True)
     description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 

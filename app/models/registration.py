@@ -71,6 +71,7 @@ class Section(Base):
     enrollments = relationship(
         "EnrollmentSection", back_populates="section", cascade="all, delete-orphan"
     )
+    location = relationship("Location", back_populates="sections")
 
 
 class Enrollment(Base):
