@@ -168,39 +168,6 @@ Foreign-key constraints:
 
 ```
 
-## Table: `users`
-
-```sql
-                              Table "public.users"
-       Column        |           Type           | Collation | Nullable | Default 
----------------------+--------------------------+-----------+----------+---------
- national_id         | character varying(14)    |           | not null | 
- university_email    | character varying        |           | not null | 
- personal_email      | character varying        |           |          | 
- hashed_password     | character varying        |           | not null | 
- first_name          | character varying(50)    |           | not null | 
- second_name         | character varying(50)    |           | not null | 
- third_name          | character varying(50)    |           | not null | 
- fourth_name         | character varying(50)    |           | not null | 
- family_name         | character varying(50)    |           | not null | 
- profile_picture_url | character varying        |           |          | 
- is_active           | boolean                  |           | not null | 
- is_verified         | boolean                  |           | not null | 
- created_at          | timestamp with time zone |           | not null | now()
- updated_at          | timestamp with time zone |           | not null | now()
- id                  | uuid                     |           | not null | 
-Indexes:
-    "pk_users" PRIMARY KEY, btree (id)
-    "ix_users_national_id" UNIQUE, btree (national_id)
-    "ix_users_university_email" UNIQUE, btree (university_email)
-Referenced by:
-    TABLE "audit_logs" CONSTRAINT "fk_audit_logs_user_id_users" FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
-    TABLE "student_scores" CONSTRAINT "fk_student_scores_grader_id_users" FOREIGN KEY (grader_id) REFERENCES users(id)
-    TABLE "students" CONSTRAINT "fk_students_user_id_users" FOREIGN KEY (user_id) REFERENCES users(id)
-    TABLE "user_roles" CONSTRAINT "fk_user_roles_user_id_users" FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-
-```
-
 ## Table: `audit_logs`
 
 ```sql
@@ -289,6 +256,44 @@ Referenced by:
 
 ```
 
+## Table: `users`
+
+```sql
+                              Table "public.users"
+       Column        |           Type           | Collation | Nullable | Default 
+---------------------+--------------------------+-----------+----------+---------
+ national_id         | character varying(14)    |           | not null | 
+ university_email    | character varying        |           | not null | 
+ personal_email      | character varying        |           |          | 
+ hashed_password     | character varying        |           | not null | 
+ profile_picture_url | character varying        |           |          | 
+ is_active           | boolean                  |           | not null | 
+ is_verified         | boolean                  |           | not null | 
+ created_at          | timestamp with time zone |           | not null | now()
+ updated_at          | timestamp with time zone |           | not null | now()
+ id                  | uuid                     |           | not null | 
+ first_name_ar       | character varying(50)    |           | not null | 
+ second_name_ar      | character varying(50)    |           | not null | 
+ third_name_ar       | character varying(50)    |           | not null | 
+ fourth_name_ar      | character varying(50)    |           | not null | 
+ family_name_ar      | character varying(50)    |           | not null | 
+ first_name_en       | character varying(50)    |           | not null | 
+ second_name_en      | character varying(50)    |           | not null | 
+ third_name_en       | character varying(50)    |           | not null | 
+ fourth_name_en      | character varying(50)    |           | not null | 
+ family_name_en      | character varying(50)    |           | not null | 
+Indexes:
+    "pk_users" PRIMARY KEY, btree (id)
+    "ix_users_national_id" UNIQUE, btree (national_id)
+    "ix_users_university_email" UNIQUE, btree (university_email)
+Referenced by:
+    TABLE "audit_logs" CONSTRAINT "fk_audit_logs_user_id_users" FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+    TABLE "student_scores" CONSTRAINT "fk_student_scores_grader_id_users" FOREIGN KEY (grader_id) REFERENCES users(id)
+    TABLE "students" CONSTRAINT "fk_students_user_id_users" FOREIGN KEY (user_id) REFERENCES users(id)
+    TABLE "user_roles" CONSTRAINT "fk_user_roles_user_id_users" FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+
+```
+
 ## Table: `departments`
 
 ```sql
@@ -364,26 +369,6 @@ Indexes:
 Foreign-key constraints:
     "fk_role_permissions_permission_id_permissions" FOREIGN KEY (permission_id) REFERENCES permissions(id) ON DELETE CASCADE
     "fk_role_permissions_role_id_roles" FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
-
-```
-
-## Table: `roles`
-
-```sql
-                                      Table "public.roles"
-   Column    |         Type          | Collation | Nullable |              Default              
--------------+-----------------------+-----------+----------+-----------------------------------
- id          | integer               |           | not null | nextval('roles_id_seq'::regclass)
- name        | character varying(50) |           | not null | 
- slug        | character varying(50) |           | not null | 
- description | text                  |           |          | 
-Indexes:
-    "pk_roles" PRIMARY KEY, btree (id)
-    "ix_roles_slug" UNIQUE, btree (slug)
-    "uq_roles_name" UNIQUE CONSTRAINT, btree (name)
-Referenced by:
-    TABLE "role_permissions" CONSTRAINT "fk_role_permissions_role_id_roles" FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
-    TABLE "user_roles" CONSTRAINT "fk_user_roles_role_id_roles" FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
 
 ```
 
@@ -527,6 +512,28 @@ Foreign-key constraints:
     "fk_elective_groups_program_id_programs" FOREIGN KEY (program_id) REFERENCES programs(id)
 Referenced by:
     TABLE "bylaw_courses" CONSTRAINT "fk_bylaw_courses_elective_group_id_elective_groups" FOREIGN KEY (elective_group_id) REFERENCES elective_groups(id)
+
+```
+
+## Table: `roles`
+
+```sql
+                                      Table "public.roles"
+   Column    |         Type          | Collation | Nullable |              Default              
+-------------+-----------------------+-----------+----------+-----------------------------------
+ id          | integer               |           | not null | nextval('roles_id_seq'::regclass)
+ slug        | character varying(50) |           | not null | 
+ description | text                  |           |          | 
+ name_ar     | character varying(50) |           | not null | 
+ name_en     | character varying(50) |           | not null | 
+Indexes:
+    "pk_roles" PRIMARY KEY, btree (id)
+    "ix_roles_slug" UNIQUE, btree (slug)
+    "uq_roles_name_ar" UNIQUE CONSTRAINT, btree (name_ar)
+    "uq_roles_name_en" UNIQUE CONSTRAINT, btree (name_en)
+Referenced by:
+    TABLE "role_permissions" CONSTRAINT "fk_role_permissions_role_id_roles" FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
+    TABLE "user_roles" CONSTRAINT "fk_user_roles_role_id_roles" FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
 
 ```
 
