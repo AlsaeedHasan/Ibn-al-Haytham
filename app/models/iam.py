@@ -2,12 +2,22 @@ import uuid
 from datetime import datetime
 from typing import List, Optional
 
-from sqlalchemy import BigInteger, Boolean, DateTime, ForeignKey, String, Text, func
+from sqlalchemy import (
+    BigInteger,
+    Boolean,
+    DateTime,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    func,
+)
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.grading import StudentScore
 from app.models.students import Student
+from app.models.tokens import Token
 
 from .base import Base
 from .mixins import TimestampMixin, UUIDModel
@@ -57,6 +67,8 @@ class User(Base, TimestampMixin, UUIDModel):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     is_verified: Mapped[bool] = mapped_column(Boolean, default=False)
 
+    token_version: Mapped[int] = mapped_column(Integer, default=1, nullable=False)
+
     roles: Mapped[List["Role"]] = relationship(
         secondary="user_roles", back_populates="users", lazy="selectin"
     )
@@ -66,6 +78,7 @@ class User(Base, TimestampMixin, UUIDModel):
     graded_scores: Mapped[List["StudentScore"]] = relationship(
         "StudentScore", back_populates="grader", cascade="all, delete-orphan"
     )
+    tokens: Mapped[List["Token"]] = relationship("Token", back_populates="user")
 
 
 class Role(Base):

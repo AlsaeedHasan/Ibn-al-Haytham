@@ -21,5 +21,6 @@ from app.models.registration import (
     Section,
 )
 from app.models.students import Student, StudentTransferHistory
+from app.models.tokens import Token
 
 from .base import Base
